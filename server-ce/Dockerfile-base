@@ -79,6 +79,26 @@ RUN mkdir /install-tl-unx \
 &&  tlmgr path add \
 &&  rm -rf /install-tl-unx
 
+# Custom changes
+# --------------------------------------------------
+# enable tlmgr to install ctex
+# update packages
+# install all the packages
+# recreate symlinks
+# update system packages
+# install minted dependency
+# install inkscape for svg support
+# enable shell-escape by default:
+RUN tlmgr update texlive-scripts \
+&&  tlmgr update --all \
+&&  tlmgr install scheme-full \
+&&  tlmgr path add \
+&&  apt-get update \
+&&  apt-get install python3-pygments -y \
+&&  apt-get install inkscape -y \
+&&  TEXLIVE_FOLDER=$(find /usr/local/texlive/ -type d -name '20*') \
+    && echo % enable shell-escape by default >> /$TEXLIVE_FOLDER/texmf.cnf \
+    && echo shell_escape = t >> /$TEXLIVE_FOLDER/texmf.cnf
 
 # Set up overleaf user and home directory
 # -----------------------------------------
